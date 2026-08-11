@@ -1,4 +1,5 @@
 "use client";
+import 'tailwindcss/tailwind.css';
 import React, { useState } from 'react';
 
 // Seed data for your AI directory
