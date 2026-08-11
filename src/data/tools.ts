@@ -387,7 +387,7 @@ export const INITIAL_TOOLS: Tool[] = [
   {
     id: 30,
     name: "AudioCraft",
-    url: "https://meta.com",
+    url: "https://audiocraft.metademolab.com",
     badge: "Free",
     desc: "Meta's open-source library utilizing generative deep learning audio models for sound effects and tracks.",
     category: "Productivity & Audio",
