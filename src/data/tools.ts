@@ -296,7 +296,7 @@ export const INITIAL_TOOLS: Tool[] = [
   },
   {
     id: 33,
-    name: "Flux.1",
+    name: "Flux3",
     url: "https://blackforestlabs.ai",
     badge: "Free",
     desc: "State-of-the-art open image generation suite by Black Forest Labs delivering unmatched text rendering and realism.",
