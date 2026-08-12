@@ -58,17 +58,6 @@ export const INITIAL_TOOLS: Tool[] = [
     featured: true
   },
   {
-    id: 12,
-    name: "DeepSeek",
-    url: "https://deepseek.com",
-    badge: "Freemium",
-    desc: "Open-source reasoning models providing highly cost-efficient math, code, and logical analysis.",
-    category: "Text & Coding",
-    upvotes: 467,
-    tags: ["OpenSource", "Reasoning", "Math"],
-    featured: true
-  },
-  {
     id: 31,
     name: "NotebookLM",
     url: "https://notebooklm.google.com",
