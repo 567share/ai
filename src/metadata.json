@@ -1,6 +1,0 @@
-{
-  "name": "AI Directory",
-  "description": "A curated repository of top-tier AI applications, developer SDKs, and workflow tools.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

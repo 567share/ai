@@ -27,14 +27,14 @@ export const ToolDetailModal: React.FC<ToolDetailModalProps> = ({
   onToggleBookmark,
   isBookmarked,
   onShowToast,
-  language = 'en',
+  language = 'zh',
   onAddTag,
   onSelectTag
 }) => {
   const [copied, setCopied] = useState(false);
   const [newTagInput, setNewTagInput] = useState('');
   const [isAddingTag, setIsAddingTag] = useState(false);
-  const t = translations[language] || translations.en;
+  const t = translations[language] || translations.zh;
 
   if (!isOpen || !tool) return null;
 

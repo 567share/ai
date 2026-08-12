@@ -83,7 +83,7 @@ export const INITIAL_TOOLS: Tool[] = [
     id: 32,
     name: "GitHub Copilot",
     url: "https://github.com/features/copilot",
-    badge: "Paid",
+    badge: "Freemium",
     desc: "AI developer pair programmer natively embedded in your IDE for real-time code autocomplete and chat.",
     category: "Text & Coding",
     upvotes: 430,

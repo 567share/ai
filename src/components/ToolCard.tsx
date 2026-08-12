@@ -23,14 +23,14 @@ export const ToolCard: React.FC<ToolCardProps> = ({
   isUpvoted,
   onToggleBookmark,
   isBookmarked,
-  language = 'en',
+  language = 'zh',
   onAddTag,
   onSelectTag
 }) => {
   const [showTagInput, setShowTagInput] = useState(false);
   const [tagInput, setTagInput] = useState('');
   const [isSubmittingTag, setIsSubmittingTag] = useState(false);
-  const t = translations[language] || translations.en;
+  const t = translations[language] || translations.zh;
 
   const handleInlineTagSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

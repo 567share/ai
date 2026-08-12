@@ -28,19 +28,19 @@ import { Language, detectSystemLanguage, translations } from './lib/i18n';
 export default function App() {
   const [language, setLanguage] = useState<Language>(() => {
     try {
-      const saved = localStorage.getItem('ai_directory_lang') as Language;
-      if (saved && translations[saved]) return saved;
+      const saved = localStorage.getItem('ai_directory_lang_user_choice') as Language;
+      if (saved && (saved === 'zh' || saved === 'en')) return saved;
     } catch {
       // fallback
     }
     return 'zh';
   });
 
-  const t = translations[language] || translations.en;
+  const t = translations[language] || translations.zh;
 
   useEffect(() => {
     try {
-      localStorage.setItem('ai_directory_lang', language);
+      localStorage.setItem('ai_directory_lang_user_choice', language);
     } catch {}
   }, [language]);
 
@@ -59,10 +59,28 @@ export default function App() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [dbError, setDbError] = useState<string | null>(null);
 
+  // Splash Loading Screen State
+  const [isSplashVisible, setIsSplashVisible] = useState(true);
+  const [isSplashFading, setIsSplashFading] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setIsSplashFading(true);
+        const removeTimer = setTimeout(() => {
+          setIsSplashVisible(false);
+        }, 500);
+        return () => clearTimeout(removeTimer);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedBadge, setSelectedBadge] = useState<string>('All');
   const [selectedTag, setSelectedTag] = useState<string>('All');
+  const [isCategoriesExpanded, setIsCategoriesExpanded] = useState(false);
   const [isTagsExpanded, setIsTagsExpanded] = useState(false);
   const [sortBy, setSortBy] = useState<'upvotes' | 'name' | 'newest'>('upvotes');
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
@@ -398,6 +416,7 @@ export default function App() {
   }, [localizedTools, tools, language, searchTerm, selectedCategory, selectedBadge, selectedTag, sortBy, showBookmarksOnly, bookmarkedIds]);
 
   const totalFreeCount = useMemo(() => tools.filter(t => t.badge === 'Free').length, [tools]);
+  const totalFreemiumCount = useMemo(() => tools.filter(t => t.badge === 'Freemium').length, [tools]);
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-blue-500 selection:text-white antialiased flex flex-col justify-between">
@@ -472,22 +491,7 @@ export default function App() {
           </div>
         </header>
 
-        <main className="max-w-6xl mx-auto px-4 py-12">
-          {/* Value Proposition Hero Section */}
-          <section className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold mb-4">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{tools.length} {t.toolsFound}</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl font-black tracking-tight mb-4 bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-              {t.heroTitle}
-            </h1>
-            <p className="text-zinc-400 text-base leading-relaxed">
-              {t.heroSubtitle}
-            </p>
-          </section>
-
+        <main className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
           {/* Database Banner Note */}
           {dbError && (
             <div className="mb-8 max-w-3xl mx-auto p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl text-xs text-amber-300 flex items-center gap-2">
@@ -550,25 +554,36 @@ export default function App() {
               </div>
             </div>
 
-            {/* Category Filter Buttons - Auto-wrap to next line */}
-            <div className="flex flex-wrap gap-2 w-full pb-1">
-              {CATEGORIES.map(category => {
-                const catLabel = translateCategory(category, language);
+            {/* Category Filter Buttons - Max 1 line with dropdown button */}
+            <div className="flex items-start justify-between gap-2 w-full pb-1">
+              <div className={`flex flex-wrap gap-2 transition-all duration-300 overflow-hidden flex-1 ${
+                isCategoriesExpanded ? 'max-h-none' : 'max-h-[40px]'
+              }`}>
+                {CATEGORIES.map(category => {
+                  const catLabel = translateCategory(category, language);
 
-                return (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`text-xs px-3.5 py-2 rounded-lg font-medium transition-all whitespace-nowrap border ${
-                      selectedCategory === category 
-                        ? "bg-blue-600 border-blue-500 text-white shadow-md shadow-blue-600/10" 
-                        : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
-                    }`}
-                  >
-                    {catLabel}
-                  </button>
-                );
-              })}
+                  return (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`text-xs px-3.5 py-2 rounded-lg font-medium transition-all whitespace-nowrap border ${
+                        selectedCategory === category 
+                          ? "bg-blue-600 border-blue-500 text-white shadow-md shadow-blue-600/10" 
+                          : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
+                      }`}
+                    >
+                      {catLabel}
+                    </button>
+                  );
+                })}
+              </div>
+              <button
+                onClick={() => setIsCategoriesExpanded(!isCategoriesExpanded)}
+                className="text-xs text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1 shrink-0 px-2.5 py-2 rounded-lg bg-zinc-900/90 border border-zinc-800 hover:border-blue-500/50"
+              >
+                <span>{isCategoriesExpanded ? t.showLess : t.showMore}</span>
+                {isCategoriesExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              </button>
             </div>
 
             {/* Popular / Custom Tags Selection Bar */}
@@ -576,7 +591,7 @@ export default function App() {
               <div className="pt-2 border-t border-zinc-900/60">
                 <div className="flex items-start justify-between gap-2">
                   <div className={`flex flex-wrap items-center gap-1.5 transition-all duration-300 overflow-hidden flex-1 ${
-                    isTagsExpanded ? 'max-h-none' : 'max-h-[96px]'
+                    isTagsExpanded ? 'max-h-none' : 'max-h-[60px]'
                   }`}>
                     <div className="flex items-center gap-1 text-xs font-semibold text-zinc-400 shrink-0 mr-1 my-0.5">
                       <Tag className="w-3.5 h-3.5 text-blue-400" />
@@ -762,7 +777,7 @@ export default function App() {
             <span>•</span>
             <span className="flex items-center gap-1">
               <Database className="w-3 h-3 text-emerald-400" />
-              <span>{tools.length} {t.toolsFound} ({totalFreeCount} {t.badgeFree})</span>
+              <span>{tools.length} {t.toolsFound} ({t.badgeFree}: {totalFreeCount}, {t.badgeFreemium}: {totalFreemiumCount})</span>
             </span>
           </div>
           <div className="flex items-center gap-4">
@@ -812,6 +827,42 @@ export default function App() {
         <div className="fixed bottom-6 right-6 z-50 bg-zinc-800 border border-zinc-700 text-zinc-100 text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 animate-in slide-in-from-bottom">
           <Database className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Full-Screen Splash Loading Screen */}
+      {isSplashVisible && (
+        <div 
+          className={`fixed inset-0 z-50 bg-zinc-950 flex flex-col items-center justify-center p-6 text-center transition-opacity duration-500 ease-out ${
+            isSplashFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}
+        >
+          <div className="max-w-md w-full flex flex-col items-center space-y-6">
+            <div className="w-16 h-16 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-2xl flex items-center justify-center font-bold text-white shadow-2xl shadow-blue-500/30 text-2xl border border-blue-400/30 animate-bounce">
+              AI
+            </div>
+
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold">
+              <Sparkles className="w-4 h-4 animate-pulse" />
+              <span>{tools.length > 0 ? `${tools.length} ${t.toolsFound}` : 'Loading Directory...'}</span>
+            </div>
+
+            <div className="space-y-3">
+              <h1 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
+                {t.heroTitle}
+              </h1>
+              <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-sm mx-auto">
+                {t.heroSubtitle}
+              </p>
+            </div>
+
+            <div className="pt-2 flex flex-col items-center gap-3">
+              <Loader2 className="w-6 h-6 text-blue-500 animate-spin" />
+              <div className="w-48 h-1 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
+                <div className="h-full bg-gradient-to-r from-blue-600 to-indigo-500 rounded-full animate-pulse w-3/4" />
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

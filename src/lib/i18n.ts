@@ -7,19 +7,12 @@ export interface LanguageOption {
 }
 
 export const LANGUAGES: LanguageOption[] = [
-  { code: 'en', name: 'English', flag: '🇺🇸' },
   { code: 'zh', name: '中文', flag: '🇨🇳' },
+  { code: 'en', name: 'English', flag: '🇺🇸' },
 ];
 
 export const detectSystemLanguage = (): Language => {
-  if (typeof window === 'undefined' || !navigator) return 'en';
-  const lang = navigator.language || (navigator as any).userLanguage || 'en';
-  const shortLang = lang.toLowerCase().slice(0, 2);
-
-  switch (shortLang) {
-    case 'zh': return 'zh';
-    default: return 'en';
-  }
+  return 'zh';
 };
 
 export const translations: Record<Language, Record<string, string>> = {
@@ -73,7 +66,11 @@ export const translations: Record<Language, Record<string, string>> = {
     addTagBtn: "Add",
     savingTag: "Saving...",
     popularTags: "Popular Tags",
-    allTags: "All Tags"
+    allTags: "All Tags",
+    showMore: "More",
+    showLess: "Show Less",
+    showMoreTags: "More Tags",
+    showLessTags: "Fewer Tags"
   },
   zh: {
     heroTitle: "AI 工具导航",
@@ -81,7 +78,7 @@ export const translations: Record<Language, Record<string, string>> = {
     searchPlaceholder: "搜索 AI 工具、分类或标签...",
     allCategories: "全部分类",
     allPricing: "运营模式",
-    submitTool: "提交工具",
+    submitTool: "上传工具",
     bookmarks: "已收藏",
     sortUpvotes: "最多点赞",
     sortName: "按名称排序",
@@ -125,6 +122,10 @@ export const translations: Record<Language, Record<string, string>> = {
     addTagBtn: "添加",
     savingTag: "保存中...",
     popularTags: "热门标签",
-    allTags: "全部标签"
+    allTags: "全部标签",
+    showMore: "展开分类",
+    showLess: "收起分类",
+    showMoreTags: "更多标签",
+    showLessTags: "收起标签"
   },
 };

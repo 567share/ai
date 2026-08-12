@@ -13,8 +13,8 @@ interface SubmitToolProps {
   language?: Language;
 }
 
-export const SubmitTool: React.FC<SubmitToolProps> = ({ isOpen, onClose, onToolSubmitted, language = 'en' }) => {
-  const t = translations[language] || translations.en;
+export const SubmitTool: React.FC<SubmitToolProps> = ({ isOpen, onClose, onToolSubmitted, language = 'zh' }) => {
+  const t = translations[language] || translations.zh;
   const [name, setName] = useState('');
   const [url, setUrl] = useState('');
   const [badge, setBadge] = useState<BadgeType>('Freemium');
