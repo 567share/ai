@@ -100,7 +100,7 @@ export const ToolDetailModal: React.FC<ToolDetailModalProps> = ({
         {cleanTags(tool.tags).length > 0 && (
           <div className="mb-6">
             <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <Tag className="w-3.5 h-3.5" /> Tags & Features
+              <Tag className="w-3.5 h-3.5" /> {t.tagsFeatures}
             </h4>
             <div className="flex flex-wrap gap-1.5">
               {cleanTags(tool.tags).map((tag, idx) => (
