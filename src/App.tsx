@@ -33,7 +33,7 @@ export default function App() {
     } catch {
       // fallback
     }
-    return detectSystemLanguage();
+    return 'zh';
   });
 
   const t = translations[language] || translations.en;
@@ -432,7 +432,7 @@ export default function App() {
                   placeholder={t.searchPlaceholder} 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-zinc-900/90 border border-zinc-800/80 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl pl-9 pr-8 py-2 text-sm outline-none transition-all placeholder:text-zinc-500 text-white"
+                  className="w-full bg-zinc-900/90 border border-zinc-800/80 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl pl-9 pr-8 py-2 text-sm outline-none transition-all p[...]"
                 />
                 {searchTerm && (
                   <button 
@@ -471,7 +471,7 @@ export default function App() {
 
               <button 
                 onClick={() => setIsSubmitOpen(true)}
-                className="text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white px-2.5 sm:px-3 py-2 rounded-lg transition-colors border border-blue-500 flex items-center gap-1.5 shadow-md shadow-blue-600/20"
+                className="text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white px-2.5 sm:px-3 py-2 rounded-lg transition-colors border border-blue-500 flex items-center gap-1.5 shadow-[...]
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">{t.submitTool}</span>
@@ -630,7 +630,7 @@ export default function App() {
                   {allAvailableTags.length > 8 && (
                     <button
                       onClick={() => setIsTagsExpanded(!isTagsExpanded)}
-                      className="text-xs text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1 shrink-0 px-2.5 py-1 rounded-lg bg-zinc-900/90 border border-zinc-800 hover:border-blue-500/40 transition-colors my-0.5"
+                      className="text-xs text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1 shrink-0 px-2.5 py-1 rounded-lg bg-zinc-900/90 border border-zinc-800 hover:border-b[...]
                     >
                       <span>{isTagsExpanded ? t.showLessTags : t.showMoreTags}</span>
                       {isTagsExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
@@ -746,7 +746,7 @@ export default function App() {
           )}
 
           {/* Callout */}
-          <section id="submit" className="mt-20 p-8 border border-zinc-900 bg-gradient-to-b from-zinc-900/50 to-zinc-950/80 rounded-2xl max-w-xl mx-auto text-center relative overflow-hidden shadow-xl">
+          <section id="submit" className="mt-20 p-8 border border-zinc-900 bg-gradient-to-b from-zinc-900/50 to-zinc-950/80 rounded-2xl max-w-xl mx-auto text-center relative overflow-hidden shado[...]
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full filter blur-2xl pointer-events-none" />
             <h2 className="text-xl font-bold mb-2 text-white">{t.submitTool}</h2>
             <p className="text-zinc-400 text-xs leading-relaxed mb-6">
@@ -817,7 +817,7 @@ export default function App() {
 
       {/* Floating Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-zinc-800 border border-zinc-700 text-zinc-100 text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 animate-in slide-in-from-bottom-5 duration-200">
+        <div className="fixed bottom-6 right-6 z-50 bg-zinc-800 border border-zinc-700 text-zinc-100 text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 animate-in slide-in-from-botto[...]
           <Database className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
